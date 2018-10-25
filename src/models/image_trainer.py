@@ -17,9 +17,7 @@ def get_img_model():
             graph_def.ParseFromString(f.read())
         except:
 
-    return {
-        'graph_def': graph_def
-    }
+            return {'graph_def': graph_def}
 
 def imgProcessor(imgId):
     return np.clip(img * 255, 0, 255).astype(np.uint8)
@@ -58,7 +56,7 @@ for j in range(0,r,25):
 
     if (checkTestCodeExists == False):
         os.mkdir(cfg.config['test-code'])
-        
+
     file_Name = cfg.config['test-code']+"/"+str(j)
 
     fileObject = open(file_Name,'wb')
@@ -93,8 +91,8 @@ for j in range(0,r,25):
 def get_img_content_(img_4d):
      if (checkTrainCodeExists == False):
         os.mkdir(cfg.config['train-code'])
-        
-    with tf.Session(graph=g1) as sess, g1.device('/gpu:0'):
+
+        with tf.Session(graph=g1) as sess, g1.device('/gpu:0'):
 
 
             content_layer = 'imgLayer'
@@ -105,18 +103,15 @@ def get_img_content_(img_4d):
 
             print (content_features.shape)
             return content_features
+            r = (training_folder_len - (training_folder_len%batch))+1
 
-    r = (training_folder_len - (training_folder_len%batch))+1
-
-    file_Name = cfg.config['train-code']+"/"+str(j)
-    fileObject = open(file_Name,'wb')
-
-   
-    
-    content_features = get_content_feature(img_4d).reshape((get_content_feature(img_4d).shape[0],7*7*512))
-
-    checkTrainCodeExists = os.path.isdir(cfg.config['train-code'])
-                                                                                                                                  
-    fileObject.close()                                
+            file_Name = cfg.config['train-code']+"/"+str(j)
+            fileObject = open(file_Name,'wb')
 
 
+
+            content_features = get_content_feature(img_4d).reshape((get_content_feature(img_4d).shape[0],7*7*512))
+
+            checkTrainCodeExists = os.path.isdir(cfg.config['train-code'])
+
+            fileObject.close()
